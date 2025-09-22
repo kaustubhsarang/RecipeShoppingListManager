@@ -4,16 +4,14 @@ package com.RecipeNotes.recipeService.service;
 import com.RecipeNotes.recipeService.dto.RecipeRequest;
 import com.RecipeNotes.recipeService.model.Recipe;
 import com.RecipeNotes.recipeService.repository.RecipeServiceRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
-    private RecipeServiceRepository recipeServiceRepository;
-
-    public RecipeService(RecipeServiceRepository recipeServiceRepository) {
-        this.recipeServiceRepository = recipeServiceRepository;
-    }
+    private final RecipeServiceRepository recipeServiceRepository;
 
     public void addRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = Recipe.builder()
@@ -30,5 +28,10 @@ public class RecipeService {
     public Recipe getRecipeById(String id) {
         return recipeServiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
+    }
+
+    public Recipe getRecipeByName(String name) {
+        Recipe recipe =  recipeServiceRepository.findByName(name);
+        return recipe;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/recipes")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -26,9 +27,9 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String getRecipeById(@PathVariable String id) {
+    public RecipeResponse getRecipeById(@PathVariable String id) {
         Recipe recipe = recipeService.getRecipeById(id);
-        RecipeResponse recipeResponse = RecipeResponse.builder()
+        return RecipeResponse.builder()
                 .id(recipe.getId())
                 .name(recipe.getName())
                 .description(recipe.getDescription())
@@ -38,7 +39,22 @@ public class RecipeController {
                 .cookingTime(recipe.getCookingTime())
                 .servings(recipe.getServings())
                 .build();
-        return recipeResponse.toString();
+    }
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public RecipeResponse getRecipeByName(@RequestParam String name) {
+        Recipe recipe = recipeService.getRecipeByName(name);
+        return RecipeResponse.builder()
+                .id(recipe.getId())
+                .name(recipe.getName())
+                .description(recipe.getDescription())
+                .ingredients(recipe.getIngredients())
+                .instructions(recipe.getInstructions())
+                .cuisine(recipe.getCuisine())
+                .cookingTime(recipe.getCookingTime())
+                .servings(recipe.getServings())
+                .build();
     }
 
 }

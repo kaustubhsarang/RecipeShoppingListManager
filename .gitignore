@@ -31,3 +31,5 @@ out/
 # Example of a specific pattern
 Maven_ch_*
 Maven__com_*
+
+RecipeNotes/target
