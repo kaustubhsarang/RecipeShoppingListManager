@@ -32,4 +32,5 @@ out/
 Maven_ch_*
 Maven__com_*
 
-RecipeNotes/target
+RecipeNotes/target/
+target/
