@@ -27,6 +27,7 @@ replay_pid*
 *.iml
 .idea/
 out/
+.idea
 
 # Example of a specific pattern
 Maven_ch_*
@@ -34,3 +35,4 @@ Maven__com_*
 
 RecipeNotes/target/
 target/
+/.idea/
