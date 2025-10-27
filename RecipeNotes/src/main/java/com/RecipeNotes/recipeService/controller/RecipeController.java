@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/recipes")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -27,7 +27,7 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RecipeResponse getRecipeById(@PathVariable String id) {
+    public RecipeResponse getRecipeById(@PathVariable("id") String id) {
         Recipe recipe = recipeService.getRecipeById(id);
         return RecipeResponse.builder()
                 .id(recipe.getId())
@@ -43,7 +43,7 @@ public class RecipeController {
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public RecipeResponse getRecipeByName(@RequestParam String name) {
+    public RecipeResponse getRecipeByName(@RequestParam("name") String name) {
         Recipe recipe = recipeService.getRecipeByName(name);
         return RecipeResponse.builder()
                 .id(recipe.getId())

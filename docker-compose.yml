@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 1. MongoDB Service
+  mongodb:
+    image: mongo:latest # Use the official MongoDB image
+    container_name: recipe_mongodb
+    ports:
+      - "27017:27017" # Map the default MongoDB port
+    volumes:
+      # This named volume persists your data, so it's not lost when the container stops/restarts
+      - mongo_data:/data/db
+    environment:
+      # Optional: set a default database for init scripts
+      MONGO_INITDB_DATABASE: recipe_db
+
+  # 2. Your Spring Boot Application Service
+  app:
+    # Use the name of the image you built in the previous step
+    build: .
+    image: recipe-app
+    container_name: recipe_spring_app
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    depends_on:
+      - mongodb
+    command: java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Dspring.data.mongodb.uri=mongodb://mongodb:27017/recipe_db -jar /app/app.jar
+#    environment:
+      # **This is the critical connection setting**
+      # The hostname is the service name (mongodb) defined above, NOT 'localhost'
+#      JAVA_TOOL_OPTIONS: >
+#        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+#      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/recipe_db
+#    DUMMY_VARIABLE: 'Keep environment block for structure'
+
+volumes:
+  mongo_data:

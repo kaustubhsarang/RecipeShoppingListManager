@@ -22,3 +22,8 @@ While most of the inheritance is fine, it also inherits unwanted elements like `
 To prevent this, the project POM contains empty overrides for these elements.
 If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
 
+### How to start docker
+
+docker build -t recipe-app .
+docker run -p 8080:8080 recipe-app
+

@@ -5,7 +5,9 @@ import com.RecipeNotes.recipeService.dto.RecipeRequest;
 import com.RecipeNotes.recipeService.model.Recipe;
 import com.RecipeNotes.recipeService.repository.RecipeServiceRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -14,6 +16,7 @@ public class RecipeService {
     private final RecipeServiceRepository recipeServiceRepository;
 
     public void addRecipe(RecipeRequest recipeRequest) {
+        System.out.println("kausti");
         Recipe recipe = Recipe.builder()
                 .name(recipeRequest.getName())
                 .description(recipeRequest.getDescription())
@@ -23,10 +26,15 @@ public class RecipeService {
                 .cookingTime(recipeRequest.getCookingTime())
                 .servings(recipeRequest.getServings())
                 .build();
-        recipeServiceRepository.save(recipe);
+        try{
+            recipeServiceRepository.save(recipe);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public Recipe getRecipeById(String id) {
-        return recipeServiceRepository.findById(id)
+        ObjectId objectId = new ObjectId(id);
+        return recipeServiceRepository.findById(objectId)
                 .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
     }
 
